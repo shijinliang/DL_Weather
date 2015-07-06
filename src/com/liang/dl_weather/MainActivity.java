@@ -2,6 +2,10 @@ package com.liang.dl_weather;
 
 import java.util.ArrayList;
 
+import net.youmi.android.AdManager;
+import net.youmi.android.banner.AdSize;
+import net.youmi.android.banner.AdView;
+
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,10 +43,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.qq.e.ads.AdListener;
-import com.qq.e.ads.AdRequest;
-import com.qq.e.ads.AdSize;
-import com.qq.e.ads.AdView;
 
 /**
  * 锟斤拷权锟斤拷锟斤拷   锟斤拷锟斤拷锟斤拷锟斤拷系lygttpod@163.com 
@@ -91,10 +91,12 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_main);
+		
+		AdManager.getInstance(this).init(Constants.appID, Constants.appSecret, false);
 		
 		weatherDataBeans = new ArrayList<WeatherDataBean>();
 		weatherIndexBeans = new ArrayList<WeatherIndexBean>();
@@ -105,71 +107,22 @@ public class MainActivity extends Activity {
 		initWeatherBody();
 		initLocation();
 		initPullToRefreshScrollView();
-
-		l = (RelativeLayout) findViewById(R.id.banner);
-		showBannerAD();
+		
+		showBanner();
 	}
 	
-	private void showBannerAD()
+	private void showBanner()
 	{
-		Log.i("info", "ShowBannerAD");
-		//创建Banner广告AdView对象
-		AdView adv = new AdView( this, AdSize.BANNER, Constants.appID,Constants.bannerID );
-		l.addView(adv);
-		//广告请求数据  设置轮播时间
-		AdRequest adr = new AdRequest();
-		
-		//未发布前设置testad为true
-		adr.setTestAd(false);
-		
-		adr.setRefresh(31);
-		adr.setShowCloseBtn(true);
-		
-		adv.setAdListener(new AdListener() {
-			
-			@Override
-			public void onNoAd(int arg0) {
-				// TODO Auto-generated method stub
-				Log.i("on no ad", "no");
-			}
-			
-			@Override
-			@Deprecated
-			public void onNoAd() {
-				// TODO Auto-generated method stub
-				Log.i("on no ad", "noarg");
-			}
-			
-			@Override
-			public void onBannerClosed() {
-				// TODO Auto-generated method stub
-				Log.i("on Banner Closed", "onBannerClosed");
-			}
-			
-			@Override
-			public void onAdReceiv() {
-				// TODO Auto-generated method stub
-				Log.i("on Ad Receiv", "onAdReceiv");
-			}
-			
-			@Override
-			public void onAdExposure() {
-				// TODO Auto-generated method stub
-				Log.i("on Ad Exposure", "onAdExposure");
-			}
-			
-			@Override
-			public void onAdClicked() {
-				// TODO Auto-generated method stub
-				Toast.makeText(MainActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
-				Log.i("on Ad Clicked", "onAdClicked");
-			}
-		}
-		);
-		
-		adv.fetchAd(adr);
-		
+		// 实例化广告条
+		AdView adView = new AdView(this, AdSize.FIT_SCREEN);
+
+		// 获取要嵌入广告条的布局
+		LinearLayout adLayout=(LinearLayout)findViewById(R.id.linearLayout_ad);
+
+		// 将广告条加入到布局中
+		adLayout.addView(adView);
 	}
+	
 	
 
 	@Override
@@ -343,7 +296,8 @@ public class MainActivity extends Activity {
 					Toast.makeText(MainActivity.this, "刷新成功",
 							Toast.LENGTH_SHORT).show();
 					
-					showBannerAD();
+					showBanner();
+					
 					//UpdateTime = DateUtils.
 					String jsonStr = new String(arg2);
 					weatherDataBeans.clear();
