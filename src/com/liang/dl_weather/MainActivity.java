@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import net.youmi.android.AdManager;
 import net.youmi.android.banner.AdSize;
 import net.youmi.android.banner.AdView;
+import net.youmi.android.spot.SplashView;
+import net.youmi.android.spot.SpotDialogListener;
+import net.youmi.android.spot.SpotManager;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -96,7 +99,13 @@ public class MainActivity extends Activity {
 		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_main);
 		
-		AdManager.getInstance(this).init(Constants.appID, Constants.appSecret, false);
+		
+		SpotManager.getInstance(this).loadSpotAds();
+		// 插屏出现动画效果，0:ANIM_NONE为无动画，1:ANIM_SIMPLE为简单动画效果，2:ANIM_ADVANCE为高级动画效果
+		SpotManager.getInstance(this).setAnimationType(SpotManager.ANIM_ADVANCE);
+		// 设置插屏动画的横竖屏展示方式，如果设置了横屏，则在有广告资源的情况下会是优先使用横屏图。
+		SpotManager.getInstance(this).setSpotOrientation(SpotManager.ORIENTATION_PORTRAIT);
+		
 		
 		weatherDataBeans = new ArrayList<WeatherDataBean>();
 		weatherIndexBeans = new ArrayList<WeatherIndexBean>();
@@ -121,6 +130,33 @@ public class MainActivity extends Activity {
 
 		// 将广告条加入到布局中
 		adLayout.addView(adView);
+		
+		if( Constants.x )
+		{
+			Constants.x = false;
+			return;
+		}
+		
+		SpotManager.getInstance(MainActivity.this).showSpotAds(MainActivity.this, new SpotDialogListener() {
+			
+			@Override
+			public void onSpotClosed() {
+				// TODO Auto-generated method stub
+				//Toast.makeText(MainActivity.this, "展示关闭", 1).show();
+			}
+			
+			@Override
+			public void onShowSuccess() {
+				// TODO Auto-generated method stub
+				//Toast.makeText(MainActivity.this, "展示成功", 1).show();
+			}
+			
+			@Override
+			public void onShowFailed() {
+				// TODO Auto-generated method stub
+				//Toast.makeText(MainActivity.this, "展示失败", 1).show();
+			}
+		});
 	}
 	
 	

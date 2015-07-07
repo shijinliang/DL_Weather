@@ -28,6 +28,12 @@
 
         <activity
             android:name="com.liang.dl_weather.MainActivity">
+        </activity>
+        
+        
+        
+        <activity
+            android:name="com.liang.dl_weather.FullActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
