@@ -50,6 +50,10 @@
         <service android:name="net.youmi.android.AdService" >
         </service>
         <service
+    		android:name="net.youmi.android.ExpService"
+    		android:exported="false" >
+		</service>
+        <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" >

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.youmi.android.AdManager;
 import net.youmi.android.banner.AdSize;
 import net.youmi.android.banner.AdView;
+import net.youmi.android.offers.OffersManager;
 import net.youmi.android.spot.SplashView;
 import net.youmi.android.spot.SpotDialogListener;
 import net.youmi.android.spot.SpotManager;
@@ -106,6 +107,7 @@ public class MainActivity extends Activity {
 		// 设置插屏动画的横竖屏展示方式，如果设置了横屏，则在有广告资源的情况下会是优先使用横屏图。
 		SpotManager.getInstance(this).setSpotOrientation(SpotManager.ORIENTATION_PORTRAIT);
 		
+		OffersManager.getInstance(MainActivity.this).onAppLaunch();
 		
 		weatherDataBeans = new ArrayList<WeatherDataBean>();
 		weatherIndexBeans = new ArrayList<WeatherIndexBean>();
@@ -118,6 +120,8 @@ public class MainActivity extends Activity {
 		initPullToRefreshScrollView();
 		
 		showBanner();
+		
+		OffersManager.getInstance(MainActivity.this).showOffersWall();
 	}
 	
 	private void showBanner()
@@ -169,6 +173,8 @@ public class MainActivity extends Activity {
 			locationClient.stop();
 			locationClient = null;
 		}
+		
+		OffersManager.getInstance(MainActivity.this).onAppExit();
 	}
 
 	private void initWeatherBody() {
@@ -196,6 +202,7 @@ public class MainActivity extends Activity {
 		wind_three = (TextView) findViewById(R.id.textView_wind_three);
 		temperature_three = (TextView) findViewById(R.id.textView_temperature_three);
 		pic[2] = (ImageView) findViewById(R.id.imageView_pic_three);
+		
 		for (int j = 0; j < 4; j++) {
 			String dateString = (String) SPUtils.get(MainActivity.this, "date"
 					+ j, "");
@@ -219,6 +226,10 @@ public class MainActivity extends Activity {
 		String currentCity = (String) SPUtils.get(MainActivity.this,
 				"currentCity", "");
 		textView_city_show.setText(currentCity);
+		//if(weatherDataBeans.size() == 0)
+		//{
+		//	return;
+		//}
 		if (!weatherDataBeans.get(0).getDate().equals("")) {
 			if (weatherDataBeans.get(0).getDate().length() > 9) {
 				String dateString = StringUtil.Substring(weatherDataBeans
