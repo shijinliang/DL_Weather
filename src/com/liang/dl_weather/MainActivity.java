@@ -15,6 +15,7 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,6 +44,7 @@ import com.qq.e.ads.AdListener;
 import com.qq.e.ads.AdRequest;
 import com.qq.e.ads.AdSize;
 import com.qq.e.ads.AdView;
+import com.qq.e.appwall.GdtAppwall;
 
 /**
  * 锟斤拷权锟斤拷锟斤拷   锟斤拷锟斤拷锟斤拷锟斤拷系lygttpod@163.com 
@@ -101,6 +103,8 @@ public class MainActivity extends Activity {
 		asyncHttpClient = new AsyncHttpClient();
 		layout_today = (LinearLayout) findViewById(R.id.linearlayout_today);
 		layout_body = (LinearLayout) findViewById(R.id.linearLayout_body);
+		
+		showWall();
 		
 		initWeatherBody();
 		initLocation();
@@ -169,6 +173,21 @@ public class MainActivity extends Activity {
 		
 		adv.fetchAd(adr);
 		
+	}
+	
+	private void showWall()
+	{
+		/*
+	        * 创建应用墙广告
+	        * “appid” 指在 http://e.qq.com/dev/ 能看到的app唯一字符串
+	        * “posid” 指在 http://e.qq.com/dev/ 生成的数字串，
+	        *  并非 appid 或者 appkey
+	        * testad 如果设置为true，则进入测试广告模式。该广告模式下不扣费。
+	        * 建议在调式时设置为true，发布前设置为false。
+	        */
+		final GdtAppwall appwall = new GdtAppwall(this,Constants.appID,Constants.appWallID, false);
+		
+		appwall.doShowAppWall();
 	}
 	
 

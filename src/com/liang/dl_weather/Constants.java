@@ -4,5 +4,6 @@ public class Constants {
 	public static final String appID = "1104686580";
 	public static final String bannerID = "7040005440284073";
 	public static final String splashID = "6070705450785054";
+	public static final String appWallID = "7090904531877495";
 
 }
