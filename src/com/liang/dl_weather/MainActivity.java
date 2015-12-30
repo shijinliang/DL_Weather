@@ -40,11 +40,11 @@ import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.qq.e.ads.AdListener;
-import com.qq.e.ads.AdRequest;
-import com.qq.e.ads.AdSize;
-import com.qq.e.ads.AdView;
-import com.qq.e.appwall.GdtAppwall;
+import com.qq.e.ads.*;
+import com.qq.e.ads.appwall.APPWall;
+import com.qq.e.ads.banner.ADSize;
+import com.qq.e.ads.banner.AbstractBannerADListener;
+import com.qq.e.ads.banner.BannerView;
 
 /**
  * 锟斤拷权锟斤拷锟斤拷   锟斤拷锟斤拷锟斤拷锟斤拷系lygttpod@163.com 
@@ -118,60 +118,26 @@ public class MainActivity extends Activity {
 	{
 		Log.i("info", "ShowBannerAD");
 		//创建Banner广告AdView对象
-		AdView adv = new AdView( this, AdSize.BANNER, Constants.appID,Constants.bannerID );
-		l.addView(adv);
-		//广告请求数据  设置轮播时间
-		AdRequest adr = new AdRequest();
+		BannerView banner = new BannerView(this, ADSize.BANNER, Constants.appID,Constants.bannerID);
+		l.addView(banner);
 		
-		//未发布前设置testad为true
-		adr.setTestAd(false);
-		
-		adr.setRefresh(31);
-		adr.setShowCloseBtn(true);
-		
-		adv.setAdListener(new AdListener() {
+		banner.setRefresh(10);
+		banner.setADListener(new AbstractBannerADListener() {
 			
 			@Override
-			public void onNoAd(int arg0) {
+			public void onNoAD(int arg0) {
 				// TODO Auto-generated method stub
 				Log.i("on no ad", "no");
 			}
 			
 			@Override
-			@Deprecated
-			public void onNoAd() {
-				// TODO Auto-generated method stub
-				Log.i("on no ad", "noarg");
-			}
-			
-			@Override
-			public void onBannerClosed() {
-				// TODO Auto-generated method stub
-				Log.i("on Banner Closed", "onBannerClosed");
-			}
-			
-			@Override
-			public void onAdReceiv() {
+			public void onADReceiv() {
 				// TODO Auto-generated method stub
 				Log.i("on Ad Receiv", "onAdReceiv");
 			}
-			
-			@Override
-			public void onAdExposure() {
-				// TODO Auto-generated method stub
-				Log.i("on Ad Exposure", "onAdExposure");
-			}
-			
-			@Override
-			public void onAdClicked() {
-				// TODO Auto-generated method stub
-				Toast.makeText(MainActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
-				Log.i("on Ad Clicked", "onAdClicked");
-			}
-		}
-		);
-		
-		adv.fetchAd(adr);
+		});
+		/* 发起广告请求，收到广告数据后会展示数据   */ 
+        banner.loadAD();
 		
 	}
 	
@@ -185,9 +151,10 @@ public class MainActivity extends Activity {
 	        * testad 如果设置为true，则进入测试广告模式。该广告模式下不扣费。
 	        * 建议在调式时设置为true，发布前设置为false。
 	        */
-		final GdtAppwall appwall = new GdtAppwall(this,Constants.appID,Constants.appWallID, false);
-		
-		appwall.doShowAppWall();
+		//final GdtAppwall appwall = new GdtAppwall(this,Constants.appID,Constants.appWallID, false);
+		final APPWall wall = new APPWall(this, Constants.appID, Constants.appWallID);
+		wall.doShowAppWall();
+		//appwall.doShowAppWall();
 	}
 	
 

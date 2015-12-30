@@ -1,7 +1,5 @@
 package com.liang.dl_weather;
-
-import com.qq.e.splash.SplashAd;
-import com.qq.e.splash.SplashAdListener;
+import com.qq.e.ads.splash.*;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,18 +18,10 @@ public class FullScreen extends Activity {
 		setContentView(R.layout.full_screen);
 		
 		FrameLayout container = (FrameLayout) this.findViewById(R.id.FullScreen);
-		
-		new SplashAd( this,container, Constants.appID,Constants.splashID, new SplashAdListener() {
+		new SplashAD(this, container, Constants.appID, Constants.splashID, new SplashADListener() {
 			
 			@Override
-			public void onAdPresent() {
-				// TODO Auto-generated method stub
-				Log.i("fullScreen", "onAdPresent");
-				//Toast.makeText( FullScreen.this , "Ready Go!", Toast.LENGTH_LONG).show();
-			}
-			
-			@Override
-			public void onAdFailed(int arg0) {
+			public void onNoAD(int arg0) {
 				// TODO Auto-generated method stub
 				Log.i("fullScreen", "onAdFailed" + arg0);
 				//Toast.makeText(FullScreen.this,"Fail" + arg0, Toast.LENGTH_LONG).show();
@@ -43,7 +33,13 @@ public class FullScreen extends Activity {
 			}
 			
 			@Override
-			public void onAdDismissed() {
+			public void onADPresent() {
+				// TODO Auto-generated method stub
+				Log.i("fullScreen", "onAdPresent");
+			}
+			
+			@Override
+			public void onADDismissed() {
 				// TODO Auto-generated method stub
 				Log.i("fullScreen", "onAdDismissed");
 				Toast.makeText(FullScreen.this,"Ready Go", Toast.LENGTH_SHORT).show();
@@ -53,8 +49,7 @@ public class FullScreen extends Activity {
 				
 				startActivity(intent);
 			}
-		} );
-		
+		});
 		
 	}
 	
